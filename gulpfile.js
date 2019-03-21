@@ -56,5 +56,5 @@ gulp.task('watch', function() {
     gulp.watch('source/sass/**/*.scss', ['sass-dist', 'sass-dev']);
 });
 
-// Default Task
-gulp.task('default', ['sass-dist', 'sass-dev', 'scripts-dist', 'watch']);
+gulp.task('build', ['sass-dist', 'sass-dev', 'scripts-dist']);
+gulp.task('default', ['build', 'watch']);
