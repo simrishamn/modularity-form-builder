@@ -1,38 +1,22 @@
 {{-- Firstname and/or lastname --}}
-@if (in_array('firstname', $field['fields']) && in_array('lastname', $field['fields']))
+@foreach($field['fields'] as $acf_field)
+    {{-- $id = uniqid() --}}
     <div class="grid mod-form-field">
         <div class="grid-md-6">
             <div class="form-group">
-                <label for="{{ $module_id }}-firstname">{{ $field['labels']['firstname'] }}{!! in_array('firstname', $field['required_fields']) ? '<span class="text-danger">*</span>' : '' !!}</label>
-                <input type="text" name="{{ sanitize_title($field['labels']['firstname']) }}" value="{{ $user_details['firstname'] }}" id="{{ $module_id }}-firstname" {{ in_array('firstname', $field['required_fields']) ? 'required' : '' }}>
-            </div>
-        </div>
-        <div class="grid-md-6">
-            <div class="form-group">
-                <label for="{{ $module_id }}-lastname">{{ $field['labels']['lastname'] }}{!! in_array('lastname', $field['required_fields']) ? '<span class="text-danger">*</span>' : '' !!}</label>
-                <input type="text" name="{{ sanitize_title($field['labels']['lastname']) }}" value="{{ $user_details['lastname'] }}" id="{{ $module_id }}-lastname" {{ in_array('lastname', $field['required_fields']) ? 'required' : '' }}>
-            </div>
-        </div>
-    </div>
-@elseif (in_array('firstname', $field['fields']) && !in_array('lastname', $field['fields']))
-    <div class="grid mod-form-field">
-        <div class="grid-md-6">
-            <div class="form-group">
-                <label for="{{ $module_id }}-firstname">{{ $field['labels']['firstname'] }}{!! in_array('firstname', $field['required_fields']) ? '<span class="text-danger">*</span>' : '' !!}</label>
-                <input type="text" name="{{ sanitize_title($field['labels']['firstname']) }}" value="{{ $user_details['firstname'] }}" id="{{ $module_id }}-firstname" {{ in_array('firstname', $field['required_fields']) ? 'required' : '' }}>
+                <label for="{{ $module_id }}-{{ $acf_field }}">
+                    {{ $field['labels'][$acf_field] }}
+                    {!! in_array($acf_field, $field['required_fields']) ? '<span class="text-danger">*</span>' : '' !!}
+                </label>
+                <input type="text"
+                       name="{{ uniqid() . '-' . sanitize_title($field['labels'][$acf_field]) }}"
+                       value="{{ $user_details[$acf_field] }}"
+                       id="{{ $module_id }}-{{ $acf_field }}"
+                       {{ in_array($acf_field, $field['required_fields']) ? 'required' : '' }}>
             </div>
         </div>
     </div>
-@elseif (!in_array('firstname', $field['fields']) && in_array('lastname', $field['fields']))
-    <div class="grid mod-form-field">
-        <div class="grid-md-6">
-            <div class="form-group">
-                <label for="{{ $module_id }}-lastname">{{ $field['labels']['lastname'] }}{!! in_array('lastname', $field['required_fields']) ? '<span class="text-danger">*</span>' : '' !!}</label>
-                <input type="text" name="{{ sanitize_title($field['labels']['lastname']) }}" value="{{ $user_details['lastname'] }}" id="{{ $module_id }}-lastname" {{ in_array('lastname', $field['required_fields']) ? 'required' : '' }}>
-            </div>
-        </div>
-    </div>
-@endif
+@endforeach
 
 {{-- Email and/or phone --}}
 @if (in_array('email', $field['fields']) && in_array('phone', $field['fields']))
