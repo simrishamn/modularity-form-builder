@@ -6,8 +6,10 @@ class Submission
 {
     public function __construct()
     {
+        //error_log(print_r($_POST, true));
         add_action('init', function () {
             if (isset($_POST['modularity-form']) && wp_verify_nonce($_POST['modularity-form'], 'submit')) {
+                // error_log(print_r($_POST, true)); { TOO LATE }
                 $this->submit();
             }
         }, 13);
@@ -52,7 +54,7 @@ class Submission
         $files = array();
         if (!empty($_FILES)) {
             $files = self::uploadFiles($_FILES, $_POST['modularity-form-id']);
-            
+
             // Return to form if upload failed
             if (isset($files['error'])) {
                 if (strpos($referer, '?') > -1) {
@@ -65,11 +67,11 @@ class Submission
             }
         }
         $_POST = array_merge($_POST, $files);
-        
+
         // Set post title, content, form page and referer
         $postTitle      = !empty($_POST['post_title']) && !empty($_POST[$_POST['post_title']]) ? $_POST[$_POST['post_title']] : get_the_title($_POST['modularity-form-id']);
         $postContent    = !empty($_POST['post_content']) && !empty($_POST[$_POST['post_content']]) ? $_POST[$_POST['post_content']] : '';
-        
+
         // Referer & page url
         $postReferer = esc_url($_POST['modularity-form-history']);
         $postFormPage = esc_url($_POST['modularity-form-url']);
@@ -94,6 +96,7 @@ class Submission
 
         //Encrypt form meta
         if (!get_option('options_mod_form_crypt')) {
+            error_log(print_r($_POST, true));
             update_post_meta($submission, 'form-data', $_POST);
         } else {
             update_post_meta($submission, 'form-data', \ModularityFormBuilder\App::encryptDecryptData('encrypt', $_POST));
@@ -117,6 +120,7 @@ class Submission
         // Get correct labels
         $labels = Helper\SenderLabels::getLabels();
         $fields = get_fields($_POST['modularity-form-id']);
+
         $fields = $fields['form_fields'];
         foreach ($fields as $key => $field) {
             if ($field['acf_fc_layout'] == 'sender') {
@@ -192,7 +196,7 @@ class Submission
     public static function uploadFiles($fileslist, $formId)
     {
 
-        //Create & get uploads folder 
+        //Create & get uploads folder
         $uploadsFolder = wp_upload_dir();
         $uploadsFolder = $uploadsFolder['basedir'] . '/modularity-form-builder';
         self::maybeCreateFolder($uploadsFolder);
@@ -200,10 +204,10 @@ class Submission
         //Get fields for file
         $fields = self::getFileFields($formId);
 
-        //Declation of allowed filetypes. 
+        //Declation of allowed filetypes.
         $allowedImageTypes = array('.jpeg', '.jpg', '.png', '.gif', '.svg');
         $allowedVideoTypes = array('.mov', '.mpeg4', '.mp4', '.avi', '.wmv', '.mpegps', '.flv', '.3gpp', '.webm');
-        
+
         // Data to be returned
         $uploaded = array();
         foreach ($fileslist as $key => $files) {
@@ -212,16 +216,16 @@ class Submission
                     continue;
                 }
 
-                //Get file details 
+                //Get file details
                 $fileName = pathinfo($files['name'][$i], PATHINFO_FILENAME);
                 $fileext = strtolower(pathinfo($files['name'][$i], PATHINFO_EXTENSION));
-                
+
                 //Validate that image is in correct format
                 if (in_array('image/*', $fields[$key]['filetypes'])) {
                     $fields[$key]['filetypes'] = array_unique(array_merge($fields[$key]['filetypes'], $allowedImageTypes));
                 }
 
-                //Validate that video is in correct format 
+                //Validate that video is in correct format
                 if (in_array('video/*', $fields[$key]['filetypes'])) {
                     $fields[$key]['filetypes'] = array_unique(array_merge($fields[$key]['filetypes'], $allowedVideoTypes));
                 }
@@ -241,10 +245,10 @@ class Submission
                         $encrypted = file_put_contents(
                             $files['tmp_name'][$i],
                             \ModularityFormBuilder\App::encryptDecryptFile(
-                                'encrypt', 
+                                'encrypt',
                                 file_get_contents($files['tmp_name'][$i])
                             )
-                        ); 
+                        );
 
                         if ($encrypted !== false) {
                             $targetFile = $uploadsFolder . '/' . uniqid() . '-' . sanitize_file_name($fileName . "-enc-" . ENCRYPT_METHOD) . '.' . $fileext;
@@ -258,7 +262,7 @@ class Submission
 
                 // Upload the file to server
                 if (move_uploaded_file($files['tmp_name'][$i], $targetFile)) {
-                    
+
                     // Upload video to YouTube
                     if (!empty($fields[$key]['upload_videos_external']) && in_array('.' . $fileext, $allowedVideoTypes)) {
                         $uploadVideo = \ModularityFormBuilder\Helper\YoutubeUploader::uploadVideo($targetFile, ucwords($fileName), '', '22');
@@ -270,13 +274,13 @@ class Submission
                     $uploaded['error'] = true;
                     continue;
                 }
-                
+
                 if (!isset($uploaded[$key])) {
                     $uploaded[$key] = array();
                 }
                 $uploaded[$key][] = $targetFile;
 
-                error_log($targetFile); 
+                error_log($targetFile);
             }
         }
 
