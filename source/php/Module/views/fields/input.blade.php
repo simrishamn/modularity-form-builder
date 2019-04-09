@@ -20,22 +20,7 @@ use ModularityFormBuilder\Helper\SanitizeData;
                 </div>
             @endif
 
-            <input
-                type="{{ $field['value_type'] }}"
-                id="{{ $module_id }}-input-{{ sanitize_title($field['label']) }}"
-                name="{{ sanitize_title($field['label']) }}"
-                @if ($field['required'])
-                    required="required"
-                @endif
-                @if ($field['value_type'] == 'date')
-                    min="{{ SanitizeData::formatDate($field['min_value']) }}"
-                    max="{{ SanitizeData::formatDate($field['max_value']) }}"
-                @elseif (in_array($field['value_type'], array('number', 'range')))
-                    @if (!empty(trim($field['min_value']))) min="{{ trim($field['min_value']) }}" @endif
-                    @if (!empty(trim($field['max_value']))) max="{{ trim($field['max_value']) }}" @endif
-                    @if (!empty(trim($field['step']))) step="{{ trim($field['step']) }}" @endif
-                @endif
-            >
+            @php new ModularityFormBuilder\Helper\RenderInput($field['value_type'], $field['label'], $field); @endphp
 
             @if (isset($field['custom_post_type_title']) && $field['custom_post_type_title'] == true)
                 <input type="hidden" name="post_title" value="{{ sanitize_title($field['label']) }}">

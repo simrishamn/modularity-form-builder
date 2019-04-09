@@ -1,5 +1,39 @@
 <?php
 
+    if ($multipleInputs) {
+        $labels = $multipleInputs['labels'];
+
+        foreach ($multipleInputs['values'] as $item) {
+            foreach ($item as $key => $value) {
+                if (empty($value)) {
+                    continue;
+                }
+                ?>
+
+                <p>
+                    <strong><?php echo $labels[$key]; ?></strong><br>
+                    <?php
+                    if (is_array($value)) {
+                        foreach ($value as $val) {
+                            if (!empty($val)) {
+                                echo nl2br($val) . '<br />';
+                            }
+                        }
+                    } else {
+                        echo nl2br($value);
+                    }
+
+                    ?>
+
+                </p>
+                
+                <?php
+
+            }
+        }
+    }
+
+    // Support for old form inputs
     foreach ($form_fields as $item) : ?>
         <?php
         if (empty($item['value']) || (isset($data['excludedFront']) && in_array($item['acf_fc_layout'],
