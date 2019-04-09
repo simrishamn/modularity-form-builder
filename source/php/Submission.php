@@ -6,10 +6,8 @@ class Submission
 {
     public function __construct()
     {
-        //error_log(print_r($_POST, true));
         add_action('init', function () {
             if (isset($_POST['modularity-form']) && wp_verify_nonce($_POST['modularity-form'], 'submit')) {
-                // error_log(print_r($_POST, true)); { TOO LATE }
                 $this->submit();
             }
         }, 13);
@@ -96,7 +94,6 @@ class Submission
 
         //Encrypt form meta
         if (!get_option('options_mod_form_crypt')) {
-            error_log(print_r($_POST, true));
             update_post_meta($submission, 'form-data', $_POST);
         } else {
             update_post_meta($submission, 'form-data', \ModularityFormBuilder\App::encryptDecryptData('encrypt', $_POST));

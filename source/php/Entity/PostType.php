@@ -437,6 +437,12 @@ class PostType
 
         $fields = get_fields($formId);
 
+        // Support for multiple inputs with same name
+        if (!empty($getData['values'])) {
+            $data['multipleInputs']['values'] = $getData['values'];
+            $data['multipleInputs']['labels'] = \ModularityFormBuilder\Helper\SenderLabels::getLabels();;
+        }
+
         $data['form_fields'] = array();
         $data['post_id'] = $post->ID;
         $data['author_id'] = $post->post_author;
@@ -473,6 +479,7 @@ class PostType
                 // Merge default and custom labels
                 if (!empty($field['custom_sender_labels']['add_sender_labels'])) {
                     $field['labels'] = array_merge($field['labels'], array_filter($field['custom_sender_labels']));
+                    $data['multipleInputs']['labels'] = array_merge($data['multipleInputs']['labels'], array_filter($field['custom_sender_labels']));
                 }
 
                 foreach ($field['fields'] as $subfield) {
@@ -492,6 +499,8 @@ class PostType
                 continue;
             }
 
+            $data['multipleInputs']['labels'][$field['label']] = $field['label'];
+
             $data['form_fields'][] = array_merge(
                 $field,
                 array(
@@ -499,6 +508,7 @@ class PostType
                     'value' => (!empty($indata[sanitize_title($field['label'])])) ? $indata[sanitize_title($field['label'])] : '',
                 )
             );
+
         }
 
         return $data;
