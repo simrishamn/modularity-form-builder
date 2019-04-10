@@ -20,7 +20,7 @@ use ModularityFormBuilder\Helper\SanitizeData;
                 </div>
             @endif
 
-            @php new ModularityFormBuilder\Helper\RenderInput($field['value_type'], $field['label'], $field); @endphp
+            {!! (new ModularityFormBuilder\Helper\RenderInput($field['value_type'], $field['label'], $field)) !!}
 
             @if (isset($field['custom_post_type_title']) && $field['custom_post_type_title'] == true)
                 <input type="hidden" name="post_title" value="{{ sanitize_title($field['label']) }}">

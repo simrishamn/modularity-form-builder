@@ -3,12 +3,12 @@
     <div class="grid mod-form-field">
         <div class="grid-md-6">
             <div class="form-group">
-                @php new ModularityFormBuilder\Helper\RenderInput('text', 'firstname', $field, $user_details); @endphp
+                {!! (new ModularityFormBuilder\Helper\RenderInput('text', 'firstname', $field, $user_details)) !!}
             </div>
         </div>
         <div class="grid-md-6">
             <div class="form-group">
-                @php new ModularityFormBuilder\Helper\RenderInput('text', 'lastname', $field, $user_details); @endphp
+                {!! (new ModularityFormBuilder\Helper\RenderInput('text', 'lastname', $field, $user_details)) !!}
             </div>
         </div>
     </div>
@@ -16,7 +16,7 @@
     <div class="grid mod-form-field">
         <div class="grid-md-6">
             <div class="form-group">
-                @php new ModularityFormBuilder\Helper\RenderInput('text', 'firstname', $field, $user_details); @endphp
+                {!! (new ModularityFormBuilder\Helper\RenderInput('text', 'firstname', $field, $user_details)) !!}
             </div>
         </div>
     </div>
@@ -24,7 +24,7 @@
     <div class="grid mod-form-field">
         <div class="grid-md-6">
             <div class="form-group">
-                @php new ModularityFormBuilder\Helper\RenderInput('text', 'lastname', $field, $user_details); @endphp
+                {!! (new ModularityFormBuilder\Helper\RenderInput('text', 'lastname', $field, $user_details)) !!}
             </div>
         </div>
     </div>
@@ -35,12 +35,12 @@
     <div class="grid mod-form-field">
         <div class="grid-md-6">
             <div class="form-group">
-                @php new ModularityFormBuilder\Helper\RenderInput('email', 'email', $field, $user_details); @endphp
+                {!! (new ModularityFormBuilder\Helper\RenderInput('email', 'email', $field, $user_details)) !!}
             </div>
         </div>
         <div class="grid-md-6">
             <div class="form-group">
-                @php new ModularityFormBuilder\Helper\RenderInput('tel', 'phone', $field, $user_details); @endphp
+                {!! (new ModularityFormBuilder\Helper\RenderInput('tel', 'phone', $field, $user_details)) !!}
             </div>
         </div>
     </div>
@@ -48,7 +48,7 @@
     <div class="grid mod-form-field">
         <div class="grid-md-6">
             <div class="form-group">
-                @php new ModularityFormBuilder\Helper\RenderInput('email', 'email', $field, $user_details); @endphp
+                {!! (new ModularityFormBuilder\Helper\RenderInput('email', 'email', $field, $user_details)) !!}
             </div>
         </div>
     </div>
@@ -56,7 +56,7 @@
     <div class="grid mod-form-field">
         <div class="grid-md-6">
             <div class="form-group">
-                @php new ModularityFormBuilder\Helper\RenderInput('tel', 'phone', $field, $user_details); @endphp
+                {!! (new ModularityFormBuilder\Helper\RenderInput('tel', 'phone', $field, $user_details)) !!}
             </div>
         </div>
     </div>
@@ -67,19 +67,19 @@
     <div class="grid mod-form-field">
         <div class="grid-md-12">
             <div class="form-group">
-                @php new ModularityFormBuilder\Helper\RenderInput('text', 'street_address', $field, $user_details, ['googleGeocoding' => $googleGeocoding]); @endphp
+                {!! (new ModularityFormBuilder\Helper\RenderInput('text', 'street_address', $field, $user_details, ['googleGeocoding' => $googleGeocoding])) !!}
             </div>
         </div>
     </div>
     <div class="grid mod-form-field">
         <div class="grid-md-6">
             <div class="form-group">
-                @php new ModularityFormBuilder\Helper\RenderInput('text', 'postal_code', $field, $user_details); @endphp
+                {!! (new ModularityFormBuilder\Helper\RenderInput('text', 'postal_code', $field, $user_details)) !!}
             </div>
         </div>
         <div class="grid-md-6">
             <div class="form-group">
-                @php new ModularityFormBuilder\Helper\RenderInput('text', 'city', $field, $user_details); @endphp
+                {!! (new ModularityFormBuilder\Helper\RenderInput('text', 'city', $field, $user_details)) !!}
             </div>
         </div>
     </div>
