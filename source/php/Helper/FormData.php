@@ -118,10 +118,10 @@ class FormData
         if (!$data) {
             return;
         }
-        
-        $fileUpload = false;
 
         foreach ($data as $item) {
+            $fileUpload = false;
+			
             if (
                 empty($item['value']) || 
                 (isset($params['excludedFront']) && in_array($item['acf_fc_layout'], $params['excludedFront']))
