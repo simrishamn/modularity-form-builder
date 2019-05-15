@@ -98,7 +98,7 @@ class FormData
         foreach ($this->getData($labels, $values) as [$label, $value]) {
             $html .= '<p>';
             $html .= '<strong>' . $label . '</strong><br />';
-            $html .= nl2br(esc_html(join('\n', $value)));
+            $html .= $this->recursive($value);
             $html .= '</p>';
         }
 
@@ -179,11 +179,33 @@ class FormData
             } else {
                 $html .= '<p>';
                 $html .= '<strong>' . $label . '</strong><br />';
-                $html .= nl2br(esc_html(join('\n', $value)));
+                $html .= $this->recursive($value);
                 $html .= '</p>';
             }
         }
 
         return $html;
     }
+
+    /**
+     * Recursive function for data handling
+     * 
+     * @param array $arr The array to search
+     * 
+     * @return string|array String of values or array to be searched
+     */
+    public function recursive($arr)
+    {
+        $values = [];  
+
+        foreach ($arr as $key => $value) {
+            if (is_array($value)) {
+                return $this->recursive($value);
+            } else {
+                $values[] = $value;
+            }
+        }
+
+        return join('<br />', $values); 
+    } 
 }
