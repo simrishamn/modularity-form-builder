@@ -93,7 +93,16 @@ class RenderInput
         // Set the input id
         $this->inputId = 'values[' . uniqid() . '][' . $this->name . ']';
 
+        // Set label
+        if (is_array($this->field['labels'])) {
+            $this->field['label'] = $this->field['labels'][$this->name];
+        }
+
         // Checks if field is required
+        if ($this->field['required']) {
+            $this->field['required_fields'] = [$this->name];
+        }
+
         if ($this->field['required_fields']) {
             if (in_array('address', $this->field['required_fields'])) {
                 $this->field['required_fields'] = array_merge(
@@ -137,8 +146,14 @@ class RenderInput
 
         // Label
         $html .= '<label for="' . $this->inputId . '">';
-        $html .= $this->field['labels'][$this->name] . $this->required['span'];
+        $html .= $this->field['label'] . ' ' . $this->required['span'];
         $html .= '</label>';
+
+        if ($this->field['description']) {
+            $html .= '<div class="text-sm text-dark-gray">';
+            $html .= SanitizeData::convertLinks($this->field['description']);
+            $html .= '</div>';
+        }
 
         // Additional markup for input group
         if ($this->inputGroup) {
