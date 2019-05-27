@@ -7,6 +7,7 @@ use ModularityFormBuilder\Helper\SanitizeData;
 <div class="grid mod-form-field" {!! $field['conditional_hidden'] !!}>
     <div class="grid-md-12">
         <div class="form-group">
+<<<<<<< HEAD
 
             <label for="{{ $module_id }}-input-{{ sanitize_title($field['label']) }}">
                 {{ $field['label'] }}
@@ -21,6 +22,8 @@ use ModularityFormBuilder\Helper\SanitizeData;
                 </div>
             @endif
 
+=======
+>>>>>>> SIEW-321 Fixed inputs not being required
             {!! (new ModularityFormBuilder\Helper\RenderInput($field['value_type'], $field['label'], $field)) !!}
 
             @if (isset($field['custom_post_type_title']) && $field['custom_post_type_title'] == true)
