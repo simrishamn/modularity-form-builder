@@ -202,10 +202,10 @@ class FormData
             if (is_array($value)) {
                 return $this->recursive($value);
             } else {
-                $values[] = $value;
+                $values[] = esc_html($value);
             }
         }
 
-        return join('<br />', $values); 
+        return join('<br />', $values);
     } 
 }
