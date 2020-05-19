@@ -1,8 +1,13 @@
 // Include gulp
-var gulp = require('gulp');
+const {
+    series,
+    src,
+    dest,
+    watch: gulpWatch
+} = require('gulp');
 
 // Include Our Plugins
-var sass = require('gulp-sass');
+var gulpSass = require('gulp-sass');
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var cssnano = require('gulp-cssnano');
@@ -11,53 +16,57 @@ var autoprefixer = require('gulp-autoprefixer');
 var plumber = require('gulp-plumber');
 
 // Compile Our Sass
-gulp.task('sass-dist', function() {
-    gulp.src('source/sass/modularity-form-builder.scss')
+function sassDist() {
+    return src('source/sass/modularity-form-builder.scss')
         .pipe(plumber())
-        .pipe(sass())
+        .pipe(gulpSass())
         .pipe(autoprefixer('last 2 version', 'safari 5', 'ie 8', 'ie 9', 'opera 12.1'))
         .pipe(rename({suffix: '.min'}))
         .pipe(cssnano())
-        .pipe(gulp.dest('dist/css'));
-});
+        .pipe(dest('dist/css'));
+}
 
-gulp.task('sass-dev', function() {
-    gulp.src('source/sass/modularity-form-builder.scss')
+function sassDev() {
+    return src('source/sass/modularity-form-builder.scss')
         .pipe(plumber())
-        .pipe(sass())
+        .pipe(gulpSass())
         .pipe(autoprefixer('last 2 version', 'safari 5', 'ie 8', 'ie 9', 'opera 12.1'))
         .pipe(rename({suffix: '.dev'}))
-        .pipe(gulp.dest('dist/css'));
-});
+        .pipe(dest('dist/css'));
+}
 
 // Concatenate & Minify JS
-gulp.task('scripts-dist', function() {
-    gulp.src([
-            'source/js/admin/*.js',
-        ])
+function scriptsDist() {
+    const admin = src([
+        'source/js/admin/*.js',
+    ])
         .pipe(concat('form-builder-admin.dev.js'))
-        .pipe(gulp.dest('dist/js'))
+        .pipe(dest('dist/js'))
         .pipe(rename('form-builder-admin.min.js'))
         .pipe(uglify())
-        .pipe(gulp.dest('dist/js'));
-    gulp.src([
+        .pipe(dest('dist/js'));
+
+    const front = src([
             'source/js/front/*.js',
         ])
         .pipe(concat('form-builder-front.dev.js'))
-        .pipe(gulp.dest('dist/js'))
+        .pipe(dest('dist/js'))
         .pipe(rename('form-builder-front.min.js'))
         .pipe(uglify())
-        .pipe(gulp.dest('dist/js'));
-});
+        .pipe(dest('dist/js'));
+
+    return Promise.all([admin, front]);
+}
 
 // Watch Files For Changes
-gulp.task('watch', function() {
-    gulp.watch('source/js/**/*.js', ['scripts-dist']);
-    gulp.watch('source/sass/**/*.scss', ['sass-dist', 'sass-dev']);
-});
+function watch() {
+    gulpWatch('source/js/**/*.js', series(scriptsDist));
+    gulpWatch('source/sass/**/*.scss', series(sassDist, sassDev));
+}
 
 // Build Task
-gulp.task('build', ['sass-dist', 'sass-dev', 'scripts-dist']);
+const build = series(sassDist, sassDev, scriptsDist);
+exports.build = build;
 
 // Default Task
-gulp.task('default', ['build', 'watch']);
+exports.default = series(build, watch);
