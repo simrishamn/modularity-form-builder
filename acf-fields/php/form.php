@@ -2,7 +2,6 @@
 
 
 if (function_exists('acf_add_local_field_group')) {
-
     acf_add_local_field_group(array(
     'key' => 'group_58eb301ecb36a',
     'title' => 'Form',
@@ -1947,10 +1946,10 @@ if (function_exists('acf_add_local_field_group')) {
                         'id' => '',
                     ),
                     'message' => __('<div style="margin: 5px 0 15px;
-                                                                background: #f1f1f157;
-                                                                border-left: 4px solid #b2b500;
-                                                                box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
-                                                                padding: 10px;">Conditional fields must be a multi-choise field that is required to fill in and lacks conditional arguments. Note that you may not get email notfications if the requirements aren\'t fulfilled.</div>', 'modularity-form-builder'),
+                background: #f1f1f157;
+                border-left: 4px solid #b2b500;
+                box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
+                padding: 10px;">Conditional fields must be a multi-choise field that is required to fill in and lacks conditional arguments. Note that you may not get email notfications if the requirements aren\'t fulfilled.</div>', 'modularity-form-builder'),
                     'new_lines' => '',
                     'esc_html' => 0,
                 ),
