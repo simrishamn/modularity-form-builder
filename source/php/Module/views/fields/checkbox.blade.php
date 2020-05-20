@@ -1,10 +1,8 @@
 <div class="grid mod-form-field" {!! $field['conditional_hidden'] !!}>
     <div class="grid-md-12">
-        <label class="label-bold" for="{{ $module_id }}-{{ sanitize_title($field['label']) }}">{{ $field['label'] }}{!!  $field['required'] ? '<span class="text-danger">*</span>' : '' !!}</label>
+		<label class="label-bold" for="{{ $module_id }}-{{ sanitize_title($field['label']) }}">{{ $field['label'] }}{!!  $field['required'] ? '<span class="text-danger">*</span>' : '' !!}</label>
         <fieldset class="form-group">
             {!! !empty($field['description']) ? '<legend class="text-sm text-dark-gray">' . ModularityFormBuilder\Helper\SanitizeData::convertLinks($field['description']) . '</legend>' : '' !!}
-
-            <div class="errors"></div>
 
             @foreach ($field['values'] as $value)
                 <label class="checkbox">
