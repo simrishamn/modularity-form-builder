@@ -4,7 +4,7 @@
     @endif
 
     <form class="box-content modularity-validation" method="post" action="" {!! $hasFileUpload ? 'enctype="multipart/form-data"' : '' !!}>
-        <?php wp_nonce_field('submit', 'modularity-form'); ?>
+        <?php wp_nonce_field('submit', 'modularity-form', true, false); ?>
         <input type="hidden" name="modularity-form-id" value="{{ $ID }}">
         <input type="hidden" name="modularity-form-post-type" value="{{ $submissionPostType }}">
         <input type="hidden" id="modularity-form-history" name="modularity-form-history" value="">
