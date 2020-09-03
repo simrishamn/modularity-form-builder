@@ -1,15 +1,19 @@
 <div class="{{ $classes }}">
     @if (!$hideTitle && !empty($post_title))
         <h4 class="box-title">{!! apply_filters('the_title', $post_title) !!}</h4>
-    @endif
+		@endif
+		
+		<?php
+			$uniqueId = rand(0, 1000);
+		?>
 
     <form class="box-content modularity-validation" method="post" action="" {!! $hasFileUpload ? 'enctype="multipart/form-data"' : '' !!}>
         <?php wp_nonce_field('submit', 'modularity-form', true, false); ?>
         <input type="hidden" name="modularity-form-id" value="{{ $ID }}">
         <input type="hidden" name="modularity-form-post-type" value="{{ $submissionPostType }}">
-        <input type="hidden" id="modularity-form-history" name="modularity-form-history" value="">
-        <input type="hidden" id="modularity-form-url" name="modularity-form-url" value="">
-        <input type="hidden" id="modularity-gdpr-data" name="modularity-gdpr-data" value="{{$dataStorage}}">
+        <input type="hidden" id="modularity-form-history-{{$uniqueId}}" name="modularity-form-history" value="">
+        <input type="hidden" id="modularity-form-url-{{$uniqueId}}" name="modularity-form-url" value="">
+        <input type="hidden" id="modularity-gdpr-data-{{$uniqueId}}" name="modularity-gdpr-data" value="{{$dataStorage}}">
         @if (isset($_GET['form']) && $_GET['form'] == 'success')
             <div class="grid">
                 <div class="grid-md-12">
