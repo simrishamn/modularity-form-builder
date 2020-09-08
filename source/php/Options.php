@@ -67,7 +67,8 @@ class Options
         $oauth2ClientID = get_option('options_mod_form_client_id');
         $oauth2ClientSecret = get_option('options_mod_form_secret');
         $redirect = admin_url() . 'edit.php?post_type=form-submissions&page=mod-form-options';
-        $appName = "YouTube uploader";
+				$appName = "YouTube uploader";
+				$test = 'test';
 
         try {
             $client = new \Google_Client();
