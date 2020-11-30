@@ -2,14 +2,27 @@
     @if (!$hideTitle && !empty($post_title))
         <h4 class="box-title">{!! apply_filters('the_title', $post_title) !!}</h4>
     @endif
+
+		<?php
+    if (!function_exists('getFormToken')) {
+      function getFormToken() {
+        static $tokenIndex = 1000;
+        return $tokenIndex++;
+      }
+    }
+		
+		$uniqueId = getFormToken(); //rand(0, 1000);
+	?>
+
     <form class="box-content modularity-validation" method="post" action="" {!! $hasFileUpload ? 'enctype="multipart/form-data"' : '' !!}>
-        {!! wp_nonce_field('submit', 'modularity-form', true, false) !!}
+				{!! wp_nonce_field("submit", "modularity-form-{$uniqueId}", true, false) !!}
+				<input type="hidden" name="modularity-form-token" value="{{ $uniqueId }}">
         <input type="hidden" name="modularity-form-id" value="{{ $ID }}">
         <input type="hidden" name="modularity-form-post-type" value="{{ $submissionPostType }}">
         <input type="hidden" name="modularity-form-history" value="">
         <input type="hidden" name="modularity-form-url" value="">
-        <input type="hidden" name="modularity-gdpr-data" value="{{$dataStorage}}">
-        @if (isset($_GET['form']) && $_GET['form'] == 'success')
+        <input type="hidden" name="modularity-gdpr-data" value="{{ $dataStorage }}">
+        @if (isset($_GET['form']) && $_GET['form'] == 'success' && (!isset($_GET['modularityToken']) || $_GET['modularityToken'] == $uniqueId))
             <div class="grid">
                 <div class="grid-md-12">
                     <div class="notice success u-mb-2"><i class="pricon pricon-check pull-left"></i> <?php echo get_field('subimission_notice', $ID) ? get_field('subimission_notice', $ID) : __('The for was submitted, thank you!', 'modularity-form-builder'); ?>
