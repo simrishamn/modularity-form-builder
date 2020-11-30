@@ -7,9 +7,15 @@ class Submission
     public function __construct()
     {
         add_action('init', function () {
-            if (isset($_POST['modularity-form']) && wp_verify_nonce($_POST['modularity-form'], 'submit')) {
-                $this->submit();
-            }
+					error_log("1");
+					if (isset($_POST['modularity-form-token'])) {
+						error_log("2");
+						$key = "modularity-form-{$_POST['modularity-form-token']}"; 
+            if (isset($_POST[$key]) && wp_verify_nonce($_POST[$key], 'submit')) {
+							error_log("3");
+							$this->submit();
+						}
+					}
         }, 13);
 
         //Force download of encrypted files
@@ -72,7 +78,8 @@ class Submission
 
         // Referer & page url
         $postReferer = esc_url($_POST['modularity-form-history']);
-        $postFormPage = esc_url($_POST['modularity-form-url']);
+				$postFormPage = esc_url($_POST['modularity-form-url']);
+				$postFormToken = intval($_POST['modularity-form-token']);
         $checkReferer = url_to_postid($postReferer);
         $checkFormPage = url_to_postid($postFormPage);
         $dbStorage = sanitize_title($_POST['modularity-gdpr-data']);
@@ -178,7 +185,11 @@ class Submission
 
         if ($dbStorage === "1") {
             wp_delete_post($submission, true);
-        }
+				}
+				
+				if ($postFormToken >= 1000) {
+					$referer .= '&modularityToken=' . $postFormToken;
+				}
 
         wp_redirect($referer);
         exit;
