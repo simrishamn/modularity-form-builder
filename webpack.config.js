@@ -3,7 +3,7 @@ const autoprefixer = require('autoprefixer');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const FixStyleOnlyEntriesPlugin = require('webpack-fix-style-only-entries');
-const ManifestPlugin = require('webpack-manifest-plugin');
+const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 
 const devMode = process.env.NODE_ENV !== 'production';
 
@@ -71,7 +71,9 @@ module.exports = {
           {
             loader: 'postcss-loader',
             options: {
-              plugins: [autoprefixer],
+              postcssOptions: {
+                plugins: [autoprefixer],
+              },
             },
           },
           'sass-loader',
@@ -120,7 +122,7 @@ module.exports = {
       filename: devMode ? '[name].css' : '[name].[contenthash:8].css',
       chunkFilename: devMode ? '[name].css' : '[name].[contenthash:8].css',
     }),
-    new ManifestPlugin({
+    new WebpackManifestPlugin({
       fileName: 'rev-manifest.json',
       // Filter manifest items
       filter(file) {
