@@ -132,6 +132,13 @@ module.exports = {
         }
         return true;
       },
+      generate: (seed, files, entries) => {
+        const manifest = {};
+        for (const file of files) {
+          manifest[file.name] = file.path.replace(/^auto/, '');
+        }
+        return manifest;
+      },
       // Custom mapping of manifest item goes here
       map(file) {
         // Fix incorrect key for fonts
